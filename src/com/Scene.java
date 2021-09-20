@@ -3,7 +3,8 @@ package com;
 import javax.swing.ImageIcon;
 import javax.swing.JPanel;
 
-import com.objet.Tuyau;
+import objet.Tuyau;
+import personnage.FlappyBird;
 
 import java.awt.*;
 import java.util.Random;
@@ -13,13 +14,13 @@ public class Scene extends JPanel {
     // VARIABLES
     private ImageIcon _icoBandeFond;
     private Image _ImgBandeFond;
-
+    public FlappyBird flappyBird;
     private final int LARGEUR_BANDE_FOND = 140; // tailel de l'image du fond
     private final int DISTANCE_TUYAUX = 250;
     private final int ECART_TUYAUX = 120;
 
     public int xFond; // determiantion abcsicce de la gauche de bande fond a defiler
-    private int _dxTuyaux;
+
     private int _xTuyaux;
 
     ///
@@ -48,7 +49,6 @@ public class Scene extends JPanel {
         this._ImgBandeFond = this._icoBandeFond.getImage(); // association à l'imagebandefond de cette image
         this.xFond = 0;
         this._xTuyaux = 100;
-        this._dxTuyaux = 0;
 
         this.tuyauHaut1 = new Tuyau(this._xTuyaux, -150, "/images/tuyauhaut.png");
         this.tuyauBas1 = new Tuyau(this._xTuyaux, 250, "/images/tuyauBas.png");
@@ -58,8 +58,14 @@ public class Scene extends JPanel {
 
         this.tuyauHaut3 = new Tuyau(this._xTuyaux + this.DISTANCE_TUYAUX * 2, -120, "/images/tuyauhaut.png");
         this.tuyauBas3 = new Tuyau(this._xTuyaux + this.DISTANCE_TUYAUX * 2, 280, "/images/tuyaubas.png");
+        this.flappyBird = new FlappyBird(100, 150, "/images/oiseau1.png");
 
         hasard = new Random();
+
+        this.setFocusable(true);
+        this.requestFocusInWindow();
+        this.addKeyListener(new Clavier());
+
         Thread chronoEcran = new Thread(new Chrono());
         chronoEcran.start(); // depart chrono et affichage ecran
     }
@@ -121,6 +127,8 @@ public class Scene extends JPanel {
     public void paintComponent(Graphics g) {
         this.deplacementFond(g);
         this.deplacementTuyaux(g);
+        this.flappyBird.set_y(this.flappyBird.get_y() + 1);
+        g.drawImage(this.flappyBird.get_imgOiseau(), this.flappyBird.get_x(), this.flappyBird.get_y(), null);
 
     }
 }

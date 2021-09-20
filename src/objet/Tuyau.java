@@ -1,4 +1,4 @@
-package com.objet;
+package objet;
 
 import javax.swing.ImageIcon;
 import java.awt.*;
