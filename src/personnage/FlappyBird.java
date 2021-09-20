@@ -3,7 +3,7 @@ package personnage;
 import javax.swing.ImageIcon;
 import java.awt.*;
 
-public class FlappyBird {
+public class FlappyBird implements Runnable {
 
     // VARIABLES
 
@@ -15,6 +15,7 @@ public class FlappyBird {
     private String _strImage;
     private ImageIcon _iconOiseau;
     private Image _imgOiseau;
+    private final int _PAUSE = 10;
 
     public FlappyBird(int x, int y, String strImage) {
         this._largeur = 34;
@@ -24,7 +25,8 @@ public class FlappyBird {
         this._strImage = strImage;
         this._iconOiseau = new ImageIcon(getClass().getResource(this._strImage));
         this._imgOiseau = this._iconOiseau.getImage();
-
+        Thread chronoOiseau = new Thread(this);
+        chronoOiseau.start();
     }
 
     /**
@@ -127,6 +129,41 @@ public class FlappyBird {
 
     public void monte() {
         this._dy = 50;
-        this._y = this._y - this._dy;
+
+    }
+
+    private void batDesAiles(int dy) {
+        if (dy > 10) {
+            this._iconOiseau = new ImageIcon(getClass().getResource("/images/oiseau2.png"));
+            this._imgOiseau = this._iconOiseau.getImage();
+
+            this._y -= 3;
+        } else {
+            if (this._dy > 5) {
+                this._y -= 2;
+            } else if (this._dy > 1) {
+                this._y -= 1;
+            } else if (this._dy == 1) {
+                this._iconOiseau = new ImageIcon(getClass().getResource("/images/oiseau1.png"));
+                this._imgOiseau = this._iconOiseau.getImage();
+
+            }
+        }
+    }
+
+    @Override
+    public void run() {
+
+        while (true) {
+            try {
+                this._dy--;
+                this.batDesAiles(_dy);
+                Thread.sleep(_PAUSE);
+            } catch (InterruptedException e) {
+
+                // e.printStackTrace();
+            }
+
+        }
     }
 }
