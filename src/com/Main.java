@@ -6,7 +6,7 @@ public class Main {
 
     public static JFrame fenetre; // une seule copie de cette variable elle sera partagee entre tous les objets de
                                   // cette classe ! partagee par toutes les instances de la classe
-    public static Scene Scene;
+    public static Scene scene;
 
     public static void main(String[] args) throws Exception {
         fenetre = new JFrame("Flappy Bird");
@@ -19,7 +19,7 @@ public class Main {
         fenetre.setResizable(false); // pas de redimensioinement
         fenetre.setAlwaysOnTop(true); // tjs au dessu des autres fenetres
 
-        Scene scene = new Scene();
+        scene = new Scene();
         fenetre.setContentPane(scene);
         fenetre.setVisible(true);
 
