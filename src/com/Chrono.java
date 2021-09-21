@@ -6,7 +6,7 @@ public class Chrono implements Runnable {
 
     @Override
     public void run() {
-        while (true) {
+        while (Main.scene.finDuJeu == false) { // tant que la fin du jeu n'est pas là on tourne
             Main.scene.xFond--; // o ndeplace le fond
             Main.scene.repaint(); // Appel paintComponent dans scene pour repeindre l'ecran
             try {
