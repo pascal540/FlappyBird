@@ -11,8 +11,9 @@ public class Clavier implements KeyListener {
     @Override
     public void keyPressed(java.awt.event.KeyEvent e) {
 
-        if (e.getKeyCode() == 32) {
+        if (e.getKeyCode() == 32 && Main.scene.finDuJeu == false) {
             Main.scene.flappyBird.monte();
+            Audio.playSound("/audio/battementaile.wav");
 
         }
     }

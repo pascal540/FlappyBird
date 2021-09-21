@@ -15,6 +15,10 @@ public class Scene extends JPanel {
     private ImageIcon _icoBandeFond;
     private Image _ImgBandeFond;
     public FlappyBird flappyBird;
+
+    private int score;
+    private Font police;
+
     private final int LARGEUR_BANDE_FOND = 140; // tailel de l'image du fond
     private final int DISTANCE_TUYAUX = 250;
     private final int ECART_TUYAUX = 120;
@@ -66,6 +70,9 @@ public class Scene extends JPanel {
         this.setFocusable(true);
         this.requestFocusInWindow();
         this.addKeyListener(new Clavier());
+
+        this.score = 0;
+        this.police = new Font("Arial", Font.PLAIN, 40);
 
         Thread chronoEcran = new Thread(new Chrono());
         chronoEcran.start(); // depart chrono et affichage ecran
@@ -160,12 +167,28 @@ public class Scene extends JPanel {
         return finDuJeu;
     }
 
+    private void score() {
+        if (this.tuyauBas1.get_x() + this.tuyauHaut1.get_largeur() == 95
+                || this.tuyauBas2.get_x() + this.tuyauHaut2.get_largeur() == 95
+                || this.tuyauBas3.get_x() + this.tuyauHaut3.get_largeur() == 95) {
+            this.score++;
+            Audio.playSound("/audio/sonnerie.wav");
+        }
+    }
+
     public void paintComponent(Graphics g) {
         this.deplacementFond(g);
         this.deplacementTuyaux(g);
+        this.score();
+        g.setFont(police); // on affecte au graphic la police definie dasn le constructeur
+        g.drawString("" + score, 140, 50);
         this.finDuJeu = this.collisionFlappy(); // a chaque rafraicchissement ecran on teste
         this.flappyBird.set_y(this.flappyBird.get_y() + 1);
         g.drawImage(this.flappyBird.get_imgOiseau(), this.flappyBird.get_x(), this.flappyBird.get_y(), null);
+        if (this.finDuJeu == true) {
+            g.drawString("Fin du jeu", 60, 200);
+            Audio.playSound("/audio/choc.wav");
+        }
 
     }
 }
